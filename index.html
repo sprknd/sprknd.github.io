@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SUPERKIND</title>
+<meta name="description" content="SUPERKIND는 매일 손이 가는 작고 쓸모 있는 앱을 만듭니다. 전국 교통 CCTV 앱 보이니(BOINY).">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SUPERKIND">
+<meta property="og:title" content="SUPERKIND">
+<meta property="og:description" content="매일 손이 가는 작고 쓸모 있는 앱을 만듭니다.">
+<meta property="og:url" content="https://sprknd.github.io/">
+<meta name="theme-color" content="#F2F1EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F0F0F" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  // The chosen theme (light/dark) is applied before the page paints; without a choice it follows the system.
+  try { const t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #F2F1EC; --dot: #D9D7CE; --fg: #0F0F0F; --muted: #5A574F; --card: #FFFFFF;
+    --line: #E2E0D8; --yellow: #FFD13B; --yellow-ink: #0F0F0F; --red: #FF4A5A; --k: #1A1410;
+  }
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #0F0F0F; --dot: #262420; --fg: #F2F1EC; --muted: #A8A397; --card: #191816;
+            --line: #2A2824; --k: #B8902A; }
+  }
+  :root[data-theme="dark"] { --bg: #0F0F0F; --dot: #262420; --fg: #F2F1EC; --muted: #A8A397; --card: #191816;
+          --line: #2A2824; --k: #B8902A; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background-color: var(--bg); color: var(--fg);
+    background-image: radial-gradient(var(--dot) 1.2px, transparent 1.3px); background-size: 16px 16px;
+    font: 17px/1.6 "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    word-break: keep-all; overflow-wrap: anywhere;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+  .doto { font-family: "Doto", ui-monospace, monospace; font-weight: 900; letter-spacing: .02em; }
+
+  header { padding: 22px 0; }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 22px; }
+  .brand svg { width: 30px; height: 30px; }
+  nav { display: flex; gap: 20px; font-size: 15px; }
+  nav a { text-decoration: none; color: var(--muted); }
+  nav a:hover { color: var(--fg); }
+  nav { align-items: center; }
+  .theme { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; cursor: pointer;
+           border: 1px solid var(--line); background: var(--card); color: var(--fg); padding: 0; }
+  .theme svg { width: 18px; height: 18px; fill: currentColor; }
+  .theme .moon { display: none; }
+  .is-dark .theme .sun { display: none; }
+  .is-dark .theme .moon { display: block; }
+
+  .hero { padding: 40px 0 72px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 40px; }
+  .hero h1 { font-size: clamp(38px, 6.6vw, 72px); line-height: 1; margin: 18px 0 20px; white-space: nowrap; }
+  .hero p { font-size: clamp(18px, 2.4vw, 22px); color: var(--muted); margin: 0 0 28px; max-width: 30ch; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px;
+          background: var(--card); border: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .live { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: blink 1.6s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: .2; } }
+  .stage { position: relative; display: grid; place-items: center; }
+  .stage::before { content: ""; position: absolute; width: min(92%, 380px); aspect-ratio: 1; border-radius: 22%;
+                   background-color: var(--card); border: 1px solid var(--line);
+                   background-image: radial-gradient(var(--dot) 1.4px, transparent 1.5px); background-size: 14px 14px;
+                   box-shadow: 0 24px 60px -30px rgba(0,0,0,.35); top: 50%; left: 50%; transform: translate(-50%, -54%); }
+  .mascot { position: relative; width: min(84%, 320px); aspect-ratio: 1; border: 0; padding: 0; background: none;
+            cursor: pointer; animation: bob 2.4s ease-in-out infinite; -webkit-tap-highlight-color: transparent; }
+  .mascot svg { width: 100%; height: 100%; display: block; }
+  .mascot .cK, .brand .cK { fill: var(--k); }
+  @keyframes bob { 50% { transform: translateY(-8px); } }
+  .bubble { position: absolute; top: 4%; right: 2%; padding: 8px 14px; border-radius: 14px; background: var(--fg);
+            color: var(--bg); font-size: 14px; font-weight: 700; pointer-events: none;
+            animation: pop 2.4s ease-in-out infinite; transition: opacity .3s; }
+  .bubble::after { content: ""; position: absolute; left: 18px; bottom: -7px; border: 8px solid transparent;
+                   border-bottom: 0; border-top-color: var(--fg); }
+  .bubble.gone { opacity: 0; }
+  @keyframes pop { 50% { transform: translateY(-4px); } }
+
+  section { padding: 56px 0; }
+  h2 { font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 20px; }
+  .apps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .app { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 28px;
+         display: flex; flex-direction: column; gap: 16px; }
+  .app-head { display: flex; align-items: center; gap: 16px; }
+  .app-icon { width: 72px; height: 72px; border-radius: 18px; flex: none; box-shadow: 0 1px 0 rgba(0,0,0,.06); }
+  .app h3 { font-size: 24px; margin: 0; line-height: 1.2; }
+  .app h3 small { display: block; font-size: 14px; font-weight: 500; color: var(--muted); margin-top: 2px; }
+  .app p { margin: 0; color: var(--muted); }
+  .app ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 15px; }
+  .app li::before { content: "■"; color: var(--yellow); margin-right: 8px; font-size: 10px; vertical-align: 2px; }
+  .stores { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
+  .store { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px;
+           background: var(--fg); color: var(--bg); text-decoration: none; font-size: 15px; font-weight: 600; }
+  .store[aria-disabled="true"] { background: transparent; color: var(--muted); border: 1px dashed var(--line); }
+  .store svg { width: 18px; height: 18px; fill: currentColor; }
+  .links { display: flex; gap: 16px; font-size: 14px; color: var(--muted); }
+
+  .contact { background: var(--yellow); color: var(--yellow-ink); border-radius: 28px; padding: 40px 32px;
+             display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .contact h2 { color: rgba(15,15,15,.6); margin-bottom: 8px; }
+  .contact p { margin: 0; font-size: clamp(22px, 3.4vw, 32px); font-weight: 700; }
+  .mail { display: inline-block; padding: 14px 22px; border-radius: 14px; background: #0F0F0F; color: #FFD13B;
+          text-decoration: none; font-weight: 700; }
+
+  footer { padding: 40px 0 56px; color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  @media (max-width: 760px) {
+    .hero { padding: 8px 0 24px; }
+    section { padding: 36px 0; }
+    .hero .wrap { grid-template-columns: 1fr; gap: 12px; }
+    .stage { order: -1; padding: 28px 0 20px; }
+    .stage::before { width: min(84vw, 320px); transform: translate(-50%, -50%); }
+    .mascot { width: min(66vw, 250px); }
+    .bubble { top: 6%; right: 4%; }
+    .hero h1 { font-size: 12.4vw; }
+    .apps { grid-template-columns: 1fr; }
+    nav { gap: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mascot, .live, .bubble { animation: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand doto" href="/" aria-label="SUPERKIND 홈"><svg viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true" id="logo"></svg>SUPERKIND</a>
+    <nav><a href="#apps">앱</a><a href="#contact">문의</a>
+      <button class="theme" id="theme" type="button" aria-label="라이트·다크 모드 전환">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5 1 3h-2zm0 20-1-3h2zM2 12l3-1v2zm20 0-3 1v-2zM4.9 4.9l2.8 1.4-1.4 1.4zm14.2 14.2-2.8-1.4 1.4-1.4zM4.9 19.1l1.4-2.8 1.4 1.4zM19.1 4.9l-1.4 2.8-1.4-1.4z"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <span class="chip"><span class="live"></span>보이니 출시 준비 중</span>
+        <h1 class="doto">SUPERKIND</h1>
+        <p>매일 손이 가는, 작고 쓸모 있는 앱을 만듭니다.</p>
+      </div>
+      <div class="stage">
+        <button class="mascot" id="mascot" type="button" aria-label="보이니 마스코트. 누르면 표정이 바뀝니다">
+          <svg viewBox="0 0 32 32" shape-rendering="crispEdges" id="face"></svg>
+        </button>
+        <div class="bubble" id="bubble" aria-hidden="true">눌러 보세요!</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="apps">
+    <div class="wrap">
+      <h2>Apps</h2>
+      <div class="apps">
+        <article class="app">
+          <div class="app-head">
+            <img class="app-icon" src="/assets/boiny-icon.png" alt="보이니 앱 아이콘" width="72" height="72">
+            <h3>보이니<small>BOINY · 전국 교통 CCTV</small></h3>
+          </div>
+          <p>고속도로부터 동네 도로까지, 전국 교통 CCTV를 실시간으로 봅니다.</p>
+          <ul>
+            <li>지도에서 주변 CCTV 바로 보기</li>
+            <li>자주 보는 곳은 즐겨찾기와 위젯으로</li>
+            <li>데이터를 아끼는 재생 방식</li>
+          </ul>
+          <div class="stores">
+            <span class="store" aria-disabled="true">App Store · 곧 출시</span>
+            <span class="store" aria-disabled="true">Google Play · 곧 출시</span>
+          </div>
+          <div class="links"><a href="https://sites.google.com/view/supacctv-privacy">개인정보처리방침</a></div>
+        </article>
+
+        <article class="app">
+          <div class="app-head">
+            <img class="app-icon" src="/assets/beony-icon.png" alt="비오니 앱 아이콘" width="72" height="72">
+            <h3>비오니<small>BEONY · 날씨, CCTV, 강수 알림</small></h3>
+          </div>
+          <p>날씨, 강수 알림, 미세먼지를 한 화면에서. 새 버전을 준비하고 있습니다.</p>
+          <ul>
+            <li>비 오기 전에 알려 주는 강수 알림</li>
+            <li>미세먼지와 날씨를 한눈에</li>
+          </ul>
+          <div class="stores">
+            <a class="store" href="https://play.google.com/store/apps/details?id=com.superkind.beony">Google Play</a>
+            <span class="store" aria-disabled="true">새 버전 준비 중</span>
+          </div>
+          <div class="links"><a href="https://sites.google.com/view/beony-privacy">개인정보처리방침</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <h2>Contact</h2>
+          <p>앱 문의와 제안은<br>메일로 보내 주세요.</p>
+        </div>
+        <a class="mail" href="mailto:superkinddev@gmail.com">superkinddev@gmail.com</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© SUPERKIND</span>
+    <span>보이니는 정부·공공기관과 관련이 없는 개인 개발 앱입니다.</span>
+  </div>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const media = matchMedia('(prefers-color-scheme: dark)');
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : media.matches;
+  const paint = () => {
+    root.classList.toggle('is-dark', isDark());
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.content = isDark() ? '#0F0F0F' : '#F2F1EC');
+  };
+  paint();
+  media.addEventListener('change', paint);
+  document.getElementById('theme').addEventListener('click', () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+    paint();
+  });
+  const FRAMES = {"idle": "<path fill=\"#FFFFFF\" d=\"M8 1h1v1h-1zM10 15h1v1h-1zM19 15h1v1h-1z\"/><path fill=\"#FF4A5A\" d=\"M9 1h1v1h-1zM7 2h4v1h-4zM8 3h2v1h-2z\"/><path class=\"cK\" d=\"M22 2h2v1h-2zM22 3h2v1h-2zM10 4h1v1h-1zM21 4h1v1h-1zM11 5h1v1h-1zM20 5h1v1h-1zM11 6h1v1h-1zM20 6h1v1h-1zM8 7h16v1h-16zM5 8h3v1h-3zM24 8h3v1h-3zM4 9h1v1h-1zM27 9h1v1h-1zM4 10h1v1h-1zM27 10h1v1h-1zM4 11h1v1h-1zM27 11h1v1h-1zM3 12h1v1h-1zM28 12h1v1h-1zM3 13h1v1h-1zM28 13h1v1h-1zM3 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM28 15h1v1h-1zM2 16h2v1h-2zM28 16h2v1h-2zM1 17h3v1h-3zM28 17h3v1h-3zM1 18h3v1h-3zM28 18h3v1h-3zM2 19h2v1h-2zM28 19h2v1h-2zM3 20h1v1h-1zM28 20h1v1h-1zM3 21h1v1h-1zM28 21h1v1h-1zM4 22h1v1h-1zM27 22h1v1h-1zM4 23h1v1h-1zM21 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM4 24h1v1h-1zM27 24h1v1h-1zM5 25h3v1h-3zM24 25h3v1h-3zM8 26h16v1h-16zM8 27h4v1h-4zM20 27h4v1h-4zM8 28h4v1h-4zM20 28h4v1h-4zM7 29h1v1h-1zM9 29h2v1h-2zM19 29h1v1h-1zM21 29h2v1h-2z\"/><path fill=\"#FFD13B\" d=\"M8 8h16v1h-16zM5 9h22v1h-22zM5 10h4v1h-4zM23 10h4v1h-4zM5 11h2v1h-2zM25 11h2v1h-2zM4 12h3v1h-3zM25 12h2v1h-2zM4 13h2v1h-2zM26 13h1v1h-1zM4 14h2v1h-2zM26 14h1v1h-1zM4 15h2v1h-2zM26 15h1v1h-1zM4 16h2v1h-2zM26 16h1v1h-1zM4 17h2v1h-2zM26 17h1v1h-1zM4 18h2v1h-2zM26 18h1v1h-1zM4 19h3v1h-3zM25 19h2v1h-2zM4 20h3v1h-3zM25 20h2v1h-2zM4 21h5v1h-5zM23 21h4v1h-4zM5 22h22v1h-22zM5 23h3v1h-3zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h8v1h-8zM23 23h1v1h-1zM25 23h2v1h-2zM5 24h22v1h-22z\"/><path fill=\"#23201C\" d=\"M9 10h14v1h-14zM7 11h1v1h-1zM10 11h15v1h-15zM8 12h17v1h-17zM6 13h1v1h-1zM8 13h18v1h-18zM6 14h4v1h-4zM12 14h7v1h-7zM21 14h5v1h-5zM6 15h3v1h-3zM13 15h5v1h-5zM22 15h4v1h-4zM6 16h3v1h-3zM13 16h5v1h-5zM22 16h4v1h-4zM6 17h4v1h-4zM12 17h7v1h-7zM21 17h5v1h-5zM6 18h1v1h-1zM9 18h14v1h-14zM25 18h1v1h-1zM7 19h7v1h-7zM15 19h2v1h-2zM18 19h7v1h-7zM7 20h8v1h-8zM17 20h8v1h-8zM9 21h14v1h-14z\"/><path fill=\"#3A352F\" d=\"M8 11h2v1h-2zM7 12h1v1h-1zM7 13h1v1h-1z\"/><path fill=\"#E3A600\" d=\"M27 12h1v1h-1zM27 13h1v1h-1zM27 14h1v1h-1zM27 15h1v1h-1zM27 16h1v1h-1zM27 17h1v1h-1zM27 18h1v1h-1zM27 19h1v1h-1zM27 20h1v1h-1zM27 21h1v1h-1zM8 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM22 23h1v1h-1zM8 25h16v1h-16z\"/><path fill=\"#FFF1C2\" d=\"M10 14h2v1h-2zM19 14h2v1h-2zM9 15h1v1h-1zM11 15h2v1h-2zM18 15h1v1h-1zM20 15h2v1h-2zM9 16h4v1h-4zM18 16h4v1h-4zM10 17h2v1h-2zM19 17h2v1h-2zM14 19h1v1h-1zM17 19h1v1h-1zM15 20h2v1h-2z\"/><path fill=\"#FF8A95\" d=\"M7 18h2v1h-2zM23 18h2v1h-2z\"/>", "blink": "<path fill=\"#FFFFFF\" d=\"M8 1h1v1h-1z\"/><path fill=\"#FF4A5A\" d=\"M9 1h1v1h-1zM7 2h4v1h-4zM8 3h2v1h-2z\"/><path class=\"cK\" d=\"M22 2h2v1h-2zM22 3h2v1h-2zM10 4h1v1h-1zM21 4h1v1h-1zM11 5h1v1h-1zM20 5h1v1h-1zM11 6h1v1h-1zM20 6h1v1h-1zM8 7h16v1h-16zM5 8h3v1h-3zM24 8h3v1h-3zM4 9h1v1h-1zM27 9h1v1h-1zM4 10h1v1h-1zM27 10h1v1h-1zM4 11h1v1h-1zM27 11h1v1h-1zM3 12h1v1h-1zM28 12h1v1h-1zM3 13h1v1h-1zM28 13h1v1h-1zM3 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM28 15h1v1h-1zM2 16h2v1h-2zM28 16h2v1h-2zM1 17h3v1h-3zM28 17h3v1h-3zM1 18h3v1h-3zM28 18h3v1h-3zM2 19h2v1h-2zM28 19h2v1h-2zM3 20h1v1h-1zM28 20h1v1h-1zM3 21h1v1h-1zM28 21h1v1h-1zM4 22h1v1h-1zM27 22h1v1h-1zM4 23h1v1h-1zM21 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM4 24h1v1h-1zM27 24h1v1h-1zM5 25h3v1h-3zM24 25h3v1h-3zM8 26h16v1h-16zM8 27h4v1h-4zM20 27h4v1h-4zM8 28h4v1h-4zM20 28h4v1h-4zM7 29h1v1h-1zM9 29h2v1h-2zM19 29h1v1h-1zM21 29h2v1h-2z\"/><path fill=\"#FFD13B\" d=\"M8 8h16v1h-16zM5 9h22v1h-22zM5 10h4v1h-4zM23 10h4v1h-4zM5 11h2v1h-2zM25 11h2v1h-2zM4 12h3v1h-3zM25 12h2v1h-2zM4 13h2v1h-2zM26 13h1v1h-1zM4 14h2v1h-2zM26 14h1v1h-1zM4 15h2v1h-2zM26 15h1v1h-1zM4 16h2v1h-2zM26 16h1v1h-1zM4 17h2v1h-2zM26 17h1v1h-1zM4 18h2v1h-2zM26 18h1v1h-1zM4 19h3v1h-3zM25 19h2v1h-2zM4 20h3v1h-3zM25 20h2v1h-2zM4 21h5v1h-5zM23 21h4v1h-4zM5 22h22v1h-22zM5 23h3v1h-3zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h8v1h-8zM23 23h1v1h-1zM25 23h2v1h-2zM5 24h22v1h-22z\"/><path fill=\"#23201C\" d=\"M9 10h14v1h-14zM7 11h1v1h-1zM10 11h15v1h-15zM8 12h17v1h-17zM6 13h1v1h-1zM8 13h18v1h-18zM6 14h20v1h-20zM6 15h20v1h-20zM6 16h3v1h-3zM13 16h5v1h-5zM22 16h4v1h-4zM6 17h20v1h-20zM6 18h1v1h-1zM9 18h14v1h-14zM25 18h1v1h-1zM7 19h7v1h-7zM15 19h2v1h-2zM18 19h7v1h-7zM7 20h8v1h-8zM17 20h8v1h-8zM9 21h14v1h-14z\"/><path fill=\"#3A352F\" d=\"M8 11h2v1h-2zM7 12h1v1h-1zM7 13h1v1h-1z\"/><path fill=\"#E3A600\" d=\"M27 12h1v1h-1zM27 13h1v1h-1zM27 14h1v1h-1zM27 15h1v1h-1zM27 16h1v1h-1zM27 17h1v1h-1zM27 18h1v1h-1zM27 19h1v1h-1zM27 20h1v1h-1zM27 21h1v1h-1zM8 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM22 23h1v1h-1zM8 25h16v1h-16z\"/><path fill=\"#FFF1C2\" d=\"M9 16h4v1h-4zM18 16h4v1h-4zM14 19h1v1h-1zM17 19h1v1h-1zM15 20h2v1h-2z\"/><path fill=\"#FF8A95\" d=\"M7 18h2v1h-2zM23 18h2v1h-2z\"/>", "happy": "<path fill=\"#FFFFFF\" d=\"M8 1h1v1h-1z\"/><path fill=\"#FF4A5A\" d=\"M9 1h1v1h-1zM7 2h4v1h-4zM8 3h2v1h-2z\"/><path class=\"cK\" d=\"M22 2h2v1h-2zM22 3h2v1h-2zM10 4h1v1h-1zM21 4h1v1h-1zM11 5h1v1h-1zM20 5h1v1h-1zM11 6h1v1h-1zM20 6h1v1h-1zM8 7h16v1h-16zM5 8h3v1h-3zM24 8h3v1h-3zM4 9h1v1h-1zM27 9h1v1h-1zM4 10h1v1h-1zM27 10h1v1h-1zM4 11h1v1h-1zM27 11h1v1h-1zM3 12h1v1h-1zM28 12h1v1h-1zM3 13h1v1h-1zM28 13h1v1h-1zM3 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM28 15h1v1h-1zM2 16h2v1h-2zM28 16h2v1h-2zM1 17h3v1h-3zM28 17h3v1h-3zM1 18h3v1h-3zM28 18h3v1h-3zM2 19h2v1h-2zM28 19h2v1h-2zM3 20h1v1h-1zM28 20h1v1h-1zM3 21h1v1h-1zM28 21h1v1h-1zM4 22h1v1h-1zM27 22h1v1h-1zM4 23h1v1h-1zM21 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM4 24h1v1h-1zM27 24h1v1h-1zM5 25h3v1h-3zM24 25h3v1h-3zM8 26h16v1h-16zM8 27h4v1h-4zM20 27h4v1h-4zM8 28h4v1h-4zM20 28h4v1h-4zM7 29h1v1h-1zM9 29h2v1h-2zM19 29h1v1h-1zM21 29h2v1h-2z\"/><path fill=\"#FFD13B\" d=\"M8 8h16v1h-16zM5 9h22v1h-22zM5 10h4v1h-4zM23 10h4v1h-4zM5 11h2v1h-2zM25 11h2v1h-2zM4 12h3v1h-3zM25 12h2v1h-2zM4 13h2v1h-2zM26 13h1v1h-1zM4 14h2v1h-2zM26 14h1v1h-1zM4 15h2v1h-2zM26 15h1v1h-1zM4 16h2v1h-2zM26 16h1v1h-1zM4 17h2v1h-2zM26 17h1v1h-1zM4 18h2v1h-2zM26 18h1v1h-1zM4 19h3v1h-3zM25 19h2v1h-2zM4 20h3v1h-3zM25 20h2v1h-2zM4 21h5v1h-5zM23 21h4v1h-4zM5 22h22v1h-22zM5 23h3v1h-3zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h8v1h-8zM23 23h1v1h-1zM25 23h2v1h-2zM5 24h22v1h-22z\"/><path fill=\"#23201C\" d=\"M9 10h14v1h-14zM7 11h1v1h-1zM10 11h15v1h-15zM8 12h17v1h-17zM6 13h1v1h-1zM8 13h18v1h-18zM6 14h20v1h-20zM6 15h4v1h-4zM12 15h7v1h-7zM21 15h5v1h-5zM6 16h3v1h-3zM10 16h2v1h-2zM13 16h5v1h-5zM19 16h2v1h-2zM22 16h4v1h-4zM6 17h20v1h-20zM6 18h1v1h-1zM9 18h14v1h-14zM25 18h1v1h-1zM7 19h7v1h-7zM18 19h7v1h-7zM7 20h8v1h-8zM17 20h8v1h-8zM9 21h14v1h-14z\"/><path fill=\"#3A352F\" d=\"M8 11h2v1h-2zM7 12h1v1h-1zM7 13h1v1h-1z\"/><path fill=\"#E3A600\" d=\"M27 12h1v1h-1zM27 13h1v1h-1zM27 14h1v1h-1zM27 15h1v1h-1zM27 16h1v1h-1zM27 17h1v1h-1zM27 18h1v1h-1zM27 19h1v1h-1zM27 20h1v1h-1zM27 21h1v1h-1zM8 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM22 23h1v1h-1zM8 25h16v1h-16z\"/><path fill=\"#FFF1C2\" d=\"M10 15h2v1h-2zM19 15h2v1h-2zM9 16h1v1h-1zM12 16h1v1h-1zM18 16h1v1h-1zM21 16h1v1h-1zM14 19h4v1h-4zM15 20h2v1h-2z\"/><path fill=\"#FF8A95\" d=\"M7 18h2v1h-2zM23 18h2v1h-2z\"/>", "heart": "<path fill=\"#FFFFFF\" d=\"M8 1h1v1h-1z\"/><path fill=\"#FF4A5A\" d=\"M9 1h1v1h-1zM7 2h4v1h-4zM8 3h2v1h-2z\"/><path class=\"cK\" d=\"M22 2h2v1h-2zM22 3h2v1h-2zM10 4h1v1h-1zM21 4h1v1h-1zM11 5h1v1h-1zM20 5h1v1h-1zM11 6h1v1h-1zM20 6h1v1h-1zM8 7h16v1h-16zM5 8h3v1h-3zM24 8h3v1h-3zM4 9h1v1h-1zM27 9h1v1h-1zM4 10h1v1h-1zM27 10h1v1h-1zM4 11h1v1h-1zM27 11h1v1h-1zM3 12h1v1h-1zM28 12h1v1h-1zM3 13h1v1h-1zM28 13h1v1h-1zM3 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM28 15h1v1h-1zM2 16h2v1h-2zM28 16h2v1h-2zM1 17h3v1h-3zM28 17h3v1h-3zM1 18h3v1h-3zM28 18h3v1h-3zM2 19h2v1h-2zM28 19h2v1h-2zM3 20h1v1h-1zM28 20h1v1h-1zM3 21h1v1h-1zM28 21h1v1h-1zM4 22h1v1h-1zM27 22h1v1h-1zM4 23h1v1h-1zM21 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM4 24h1v1h-1zM27 24h1v1h-1zM5 25h3v1h-3zM24 25h3v1h-3zM8 26h16v1h-16zM8 27h4v1h-4zM20 27h4v1h-4zM8 28h4v1h-4zM20 28h4v1h-4zM7 29h1v1h-1zM9 29h2v1h-2zM19 29h1v1h-1zM21 29h2v1h-2z\"/><path fill=\"#FFD13B\" d=\"M8 8h16v1h-16zM5 9h22v1h-22zM5 10h4v1h-4zM23 10h4v1h-4zM5 11h2v1h-2zM25 11h2v1h-2zM4 12h3v1h-3zM25 12h2v1h-2zM4 13h2v1h-2zM26 13h1v1h-1zM4 14h2v1h-2zM26 14h1v1h-1zM4 15h2v1h-2zM26 15h1v1h-1zM4 16h2v1h-2zM26 16h1v1h-1zM4 17h2v1h-2zM26 17h1v1h-1zM4 18h2v1h-2zM26 18h1v1h-1zM4 19h3v1h-3zM25 19h2v1h-2zM4 20h3v1h-3zM25 20h2v1h-2zM4 21h5v1h-5zM23 21h4v1h-4zM5 22h22v1h-22zM5 23h3v1h-3zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h8v1h-8zM23 23h1v1h-1zM25 23h2v1h-2zM5 24h22v1h-22z\"/><path fill=\"#23201C\" d=\"M9 10h14v1h-14zM7 11h1v1h-1zM10 11h15v1h-15zM8 12h17v1h-17zM6 13h1v1h-1zM8 13h18v1h-18zM6 14h3v1h-3zM11 14h1v1h-1zM14 14h4v1h-4zM20 14h1v1h-1zM23 14h3v1h-3zM6 15h3v1h-3zM14 15h4v1h-4zM23 15h3v1h-3zM6 16h4v1h-4zM13 16h6v1h-6zM22 16h4v1h-4zM6 17h5v1h-5zM12 17h8v1h-8zM21 17h5v1h-5zM6 18h1v1h-1zM9 18h14v1h-14zM25 18h1v1h-1zM7 19h7v1h-7zM15 19h2v1h-2zM18 19h7v1h-7zM7 20h8v1h-8zM17 20h8v1h-8zM9 21h14v1h-14z\"/><path fill=\"#3A352F\" d=\"M8 11h2v1h-2zM7 12h1v1h-1zM7 13h1v1h-1z\"/><path fill=\"#E3A600\" d=\"M27 12h1v1h-1zM27 13h1v1h-1zM27 14h1v1h-1zM27 15h1v1h-1zM27 16h1v1h-1zM27 17h1v1h-1zM27 18h1v1h-1zM27 19h1v1h-1zM27 20h1v1h-1zM27 21h1v1h-1zM8 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM22 23h1v1h-1zM8 25h16v1h-16z\"/><path fill=\"#FF8A95\" d=\"M9 14h2v1h-2zM12 14h2v1h-2zM18 14h2v1h-2zM21 14h2v1h-2zM9 15h5v1h-5zM18 15h5v1h-5zM10 16h3v1h-3zM19 16h3v1h-3zM11 17h1v1h-1zM20 17h1v1h-1zM7 18h2v1h-2zM23 18h2v1h-2z\"/><path fill=\"#FFF1C2\" d=\"M14 19h1v1h-1zM17 19h1v1h-1zM15 20h2v1h-2z\"/>", "surprise": "<path fill=\"#FFFFFF\" d=\"M8 1h1v1h-1zM10 15h1v1h-1zM19 15h1v1h-1z\"/><path fill=\"#FF4A5A\" d=\"M9 1h1v1h-1zM7 2h4v1h-4zM8 3h2v1h-2z\"/><path class=\"cK\" d=\"M22 2h2v1h-2zM22 3h2v1h-2zM10 4h1v1h-1zM21 4h1v1h-1zM11 5h1v1h-1zM20 5h1v1h-1zM11 6h1v1h-1zM20 6h1v1h-1zM8 7h16v1h-16zM5 8h3v1h-3zM24 8h3v1h-3zM4 9h1v1h-1zM27 9h1v1h-1zM4 10h1v1h-1zM27 10h1v1h-1zM4 11h1v1h-1zM27 11h1v1h-1zM3 12h1v1h-1zM28 12h1v1h-1zM3 13h1v1h-1zM28 13h1v1h-1zM3 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM28 15h1v1h-1zM2 16h2v1h-2zM28 16h2v1h-2zM1 17h3v1h-3zM28 17h3v1h-3zM1 18h3v1h-3zM28 18h3v1h-3zM2 19h2v1h-2zM28 19h2v1h-2zM3 20h1v1h-1zM28 20h1v1h-1zM3 21h1v1h-1zM28 21h1v1h-1zM4 22h1v1h-1zM27 22h1v1h-1zM4 23h1v1h-1zM21 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM4 24h1v1h-1zM27 24h1v1h-1zM5 25h3v1h-3zM24 25h3v1h-3zM8 26h16v1h-16zM8 27h4v1h-4zM20 27h4v1h-4zM8 28h4v1h-4zM20 28h4v1h-4zM7 29h1v1h-1zM9 29h2v1h-2zM19 29h1v1h-1zM21 29h2v1h-2z\"/><path fill=\"#FFD13B\" d=\"M8 8h16v1h-16zM5 9h22v1h-22zM5 10h4v1h-4zM23 10h4v1h-4zM5 11h2v1h-2zM25 11h2v1h-2zM4 12h3v1h-3zM25 12h2v1h-2zM4 13h2v1h-2zM26 13h1v1h-1zM4 14h2v1h-2zM26 14h1v1h-1zM4 15h2v1h-2zM26 15h1v1h-1zM4 16h2v1h-2zM26 16h1v1h-1zM4 17h2v1h-2zM26 17h1v1h-1zM4 18h2v1h-2zM26 18h1v1h-1zM4 19h3v1h-3zM25 19h2v1h-2zM4 20h3v1h-3zM25 20h2v1h-2zM4 21h5v1h-5zM23 21h4v1h-4zM5 22h22v1h-22zM5 23h3v1h-3zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h8v1h-8zM23 23h1v1h-1zM25 23h2v1h-2zM5 24h22v1h-22z\"/><path fill=\"#23201C\" d=\"M9 10h14v1h-14zM7 11h1v1h-1zM10 11h15v1h-15zM8 12h17v1h-17zM6 13h1v1h-1zM8 13h18v1h-18zM6 14h4v1h-4zM12 14h7v1h-7zM21 14h5v1h-5zM6 15h3v1h-3zM13 15h5v1h-5zM22 15h4v1h-4zM6 16h3v1h-3zM13 16h5v1h-5zM22 16h4v1h-4zM6 17h4v1h-4zM12 17h7v1h-7zM21 17h5v1h-5zM6 18h9v1h-9zM17 18h9v1h-9zM7 19h7v1h-7zM15 19h2v1h-2zM18 19h7v1h-7zM7 20h8v1h-8zM17 20h8v1h-8zM9 21h14v1h-14z\"/><path fill=\"#3A352F\" d=\"M8 11h2v1h-2zM7 12h1v1h-1zM7 13h1v1h-1z\"/><path fill=\"#E3A600\" d=\"M27 12h1v1h-1zM27 13h1v1h-1zM27 14h1v1h-1zM27 15h1v1h-1zM27 16h1v1h-1zM27 17h1v1h-1zM27 18h1v1h-1zM27 19h1v1h-1zM27 20h1v1h-1zM27 21h1v1h-1zM8 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM22 23h1v1h-1zM8 25h16v1h-16z\"/><path fill=\"#FFF1C2\" d=\"M10 14h2v1h-2zM19 14h2v1h-2zM9 15h1v1h-1zM11 15h2v1h-2zM18 15h1v1h-1zM20 15h2v1h-2zM9 16h4v1h-4zM18 16h4v1h-4zM10 17h2v1h-2zM19 17h2v1h-2zM15 18h2v1h-2zM14 19h1v1h-1zM17 19h1v1h-1zM15 20h2v1h-2z\"/>", "test_pattern": "<path fill=\"#FFFFFF\" d=\"M8 1h1v1h-1z\"/><path fill=\"#FF4A5A\" d=\"M9 1h1v1h-1zM7 2h4v1h-4zM8 3h2v1h-2z\"/><path class=\"cK\" d=\"M22 2h2v1h-2zM22 3h2v1h-2zM10 4h1v1h-1zM21 4h1v1h-1zM11 5h1v1h-1zM20 5h1v1h-1zM11 6h1v1h-1zM20 6h1v1h-1zM8 7h16v1h-16zM5 8h3v1h-3zM24 8h3v1h-3zM4 9h1v1h-1zM27 9h1v1h-1zM4 10h1v1h-1zM27 10h1v1h-1zM4 11h1v1h-1zM27 11h1v1h-1zM3 12h1v1h-1zM28 12h1v1h-1zM3 13h1v1h-1zM28 13h1v1h-1zM3 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM28 15h1v1h-1zM2 16h2v1h-2zM28 16h2v1h-2zM1 17h3v1h-3zM28 17h3v1h-3zM1 18h3v1h-3zM28 18h3v1h-3zM2 19h2v1h-2zM28 19h2v1h-2zM3 20h1v1h-1zM28 20h1v1h-1zM3 21h1v1h-1zM28 21h1v1h-1zM4 22h1v1h-1zM27 22h1v1h-1zM4 23h1v1h-1zM21 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM4 24h1v1h-1zM27 24h1v1h-1zM5 25h3v1h-3zM24 25h3v1h-3zM8 26h16v1h-16zM8 27h4v1h-4zM20 27h4v1h-4zM8 28h4v1h-4zM20 28h4v1h-4zM7 29h1v1h-1zM9 29h2v1h-2zM19 29h1v1h-1zM21 29h2v1h-2z\"/><path fill=\"#FFD13B\" d=\"M8 8h16v1h-16zM5 9h22v1h-22zM5 10h4v1h-4zM23 10h4v1h-4zM5 11h2v1h-2zM25 11h2v1h-2zM4 12h3v1h-3zM25 12h2v1h-2zM4 13h2v1h-2zM26 13h1v1h-1zM4 14h2v1h-2zM26 14h1v1h-1zM4 15h2v1h-2zM26 15h1v1h-1zM4 16h2v1h-2zM26 16h1v1h-1zM4 17h2v1h-2zM26 17h1v1h-1zM4 18h2v1h-2zM26 18h1v1h-1zM4 19h3v1h-3zM25 19h2v1h-2zM4 20h3v1h-3zM25 20h2v1h-2zM4 21h5v1h-5zM23 21h4v1h-4zM5 22h22v1h-22zM5 23h3v1h-3zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h8v1h-8zM23 23h1v1h-1zM25 23h2v1h-2zM5 24h22v1h-22z\"/><path fill=\"#C0C000\" d=\"M9 10h3v1h-3zM9 11h3v1h-3zM9 12h3v1h-3zM9 13h3v1h-3zM9 14h3v1h-3zM9 15h3v1h-3zM9 16h3v1h-3zM9 17h3v1h-3zM9 18h3v1h-3zM9 19h3v1h-3zM9 20h3v1h-3zM9 21h3v1h-3z\"/><path fill=\"#00C0C0\" d=\"M12 10h3v1h-3zM12 11h3v1h-3zM12 12h3v1h-3zM12 13h3v1h-3zM12 14h3v1h-3zM12 15h3v1h-3zM12 16h3v1h-3zM12 17h3v1h-3zM12 18h3v1h-3zM12 19h3v1h-3zM12 20h3v1h-3zM12 21h3v1h-3z\"/><path fill=\"#00C000\" d=\"M15 10h3v1h-3zM15 11h3v1h-3zM15 12h3v1h-3zM15 13h3v1h-3zM15 14h3v1h-3zM15 15h3v1h-3zM15 16h3v1h-3zM15 17h3v1h-3zM15 18h3v1h-3zM15 19h3v1h-3zM15 20h3v1h-3zM15 21h3v1h-3z\"/><path fill=\"#C000C0\" d=\"M18 10h3v1h-3zM18 11h3v1h-3zM18 12h3v1h-3zM18 13h3v1h-3zM18 14h3v1h-3zM18 15h3v1h-3zM18 16h3v1h-3zM18 17h3v1h-3zM18 18h3v1h-3zM18 19h3v1h-3zM18 20h3v1h-3zM18 21h3v1h-3z\"/><path fill=\"#C00000\" d=\"M21 10h2v1h-2zM21 11h3v1h-3zM21 12h3v1h-3zM21 13h3v1h-3zM21 14h3v1h-3zM21 15h3v1h-3zM21 16h3v1h-3zM21 17h3v1h-3zM21 18h3v1h-3zM21 19h3v1h-3zM21 20h3v1h-3zM21 21h2v1h-2z\"/><path fill=\"#C0C0C0\" d=\"M7 11h2v1h-2zM7 12h2v1h-2zM6 13h3v1h-3zM6 14h3v1h-3zM6 15h3v1h-3zM6 16h3v1h-3zM6 17h3v1h-3zM6 18h3v1h-3zM7 19h2v1h-2zM7 20h2v1h-2z\"/><path fill=\"#0000C0\" d=\"M24 11h1v1h-1zM24 12h1v1h-1zM24 13h2v1h-2zM24 14h2v1h-2zM24 15h2v1h-2zM24 16h2v1h-2zM24 17h2v1h-2zM24 18h2v1h-2zM24 19h1v1h-1zM24 20h1v1h-1z\"/><path fill=\"#E3A600\" d=\"M27 12h1v1h-1zM27 13h1v1h-1zM27 14h1v1h-1zM27 15h1v1h-1zM27 16h1v1h-1zM27 17h1v1h-1zM27 18h1v1h-1zM27 19h1v1h-1zM27 20h1v1h-1zM27 21h1v1h-1zM8 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM22 23h1v1h-1zM8 25h16v1h-16z\"/>", "sleep": "<path class=\"cK\" d=\"M26 0h4v1h-4zM28 1h1v1h-1zM22 2h2v1h-2zM27 2h1v1h-1zM22 3h2v1h-2zM26 3h4v1h-4zM10 4h1v1h-1zM21 4h1v1h-1zM11 5h1v1h-1zM20 5h1v1h-1zM11 6h1v1h-1zM20 6h1v1h-1zM8 7h16v1h-16zM5 8h3v1h-3zM24 8h3v1h-3zM4 9h1v1h-1zM27 9h1v1h-1zM4 10h1v1h-1zM27 10h1v1h-1zM4 11h1v1h-1zM27 11h1v1h-1zM3 12h1v1h-1zM28 12h1v1h-1zM3 13h1v1h-1zM28 13h1v1h-1zM3 14h1v1h-1zM28 14h1v1h-1zM3 15h1v1h-1zM28 15h1v1h-1zM2 16h2v1h-2zM28 16h2v1h-2zM1 17h3v1h-3zM28 17h3v1h-3zM1 18h3v1h-3zM28 18h3v1h-3zM2 19h2v1h-2zM28 19h2v1h-2zM3 20h1v1h-1zM28 20h1v1h-1zM3 21h1v1h-1zM28 21h1v1h-1zM4 22h1v1h-1zM27 22h1v1h-1zM4 23h1v1h-1zM21 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM4 24h1v1h-1zM27 24h1v1h-1zM5 25h3v1h-3zM24 25h3v1h-3zM8 26h16v1h-16zM8 27h4v1h-4zM20 27h4v1h-4zM8 28h4v1h-4zM20 28h4v1h-4zM7 29h1v1h-1zM9 29h2v1h-2zM19 29h1v1h-1zM21 29h2v1h-2z\"/><path fill=\"#FFFFFF\" d=\"M8 1h1v1h-1z\"/><path fill=\"#FF4A5A\" d=\"M9 1h1v1h-1zM7 2h4v1h-4zM8 3h2v1h-2z\"/><path fill=\"#FFD13B\" d=\"M8 8h16v1h-16zM5 9h22v1h-22zM5 10h4v1h-4zM23 10h4v1h-4zM5 11h2v1h-2zM25 11h2v1h-2zM4 12h3v1h-3zM25 12h2v1h-2zM4 13h2v1h-2zM26 13h1v1h-1zM4 14h2v1h-2zM26 14h1v1h-1zM4 15h2v1h-2zM26 15h1v1h-1zM4 16h2v1h-2zM26 16h1v1h-1zM4 17h2v1h-2zM26 17h1v1h-1zM4 18h2v1h-2zM26 18h1v1h-1zM4 19h3v1h-3zM25 19h2v1h-2zM4 20h3v1h-3zM25 20h2v1h-2zM4 21h5v1h-5zM23 21h4v1h-4zM5 22h22v1h-22zM5 23h3v1h-3zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h8v1h-8zM23 23h1v1h-1zM25 23h2v1h-2zM5 24h22v1h-22z\"/><path fill=\"#23201C\" d=\"M9 10h14v1h-14zM7 11h1v1h-1zM10 11h15v1h-15zM8 12h17v1h-17zM6 13h1v1h-1zM8 13h18v1h-18zM6 14h20v1h-20zM6 15h20v1h-20zM6 16h3v1h-3zM13 16h5v1h-5zM22 16h4v1h-4zM6 17h20v1h-20zM6 18h20v1h-20zM7 19h8v1h-8zM17 19h8v1h-8zM7 20h18v1h-18zM9 21h14v1h-14z\"/><path fill=\"#3A352F\" d=\"M8 11h2v1h-2zM7 12h1v1h-1zM7 13h1v1h-1z\"/><path fill=\"#E3A600\" d=\"M27 12h1v1h-1zM27 13h1v1h-1zM27 14h1v1h-1zM27 15h1v1h-1zM27 16h1v1h-1zM27 17h1v1h-1zM27 18h1v1h-1zM27 19h1v1h-1zM27 20h1v1h-1zM27 21h1v1h-1zM8 23h1v1h-1zM10 23h1v1h-1zM12 23h1v1h-1zM22 23h1v1h-1zM8 25h16v1h-16z\"/><path fill=\"#FFF1C2\" d=\"M9 16h4v1h-4zM18 16h4v1h-4zM15 19h2v1h-2z\"/>"};
+  const face = document.getElementById('face');
+  const logo = document.getElementById('logo');
+  logo.innerHTML = FRAMES.idle;
+  const cycle = ['happy', 'heart', 'surprise', 'test_pattern', 'sleep'];
+  let mood = 'idle', step = 0, timer;
+  const show = m => { mood = m; face.innerHTML = FRAMES[m]; };
+  show('idle');
+  // Blink now and then while idle, like the app.
+  setInterval(() => {
+    if (mood !== 'idle') return;
+    face.innerHTML = FRAMES.blink;
+    setTimeout(() => { if (mood === 'idle') face.innerHTML = FRAMES.idle; }, 140);
+  }, 3200);
+  document.getElementById('mascot').addEventListener('click', () => {
+    document.getElementById('bubble').classList.add('gone');
+    show(cycle[step++ % cycle.length]);
+    clearTimeout(timer);
+    timer = setTimeout(() => show('idle'), 2200);
+  });
+</script>
+</body>
+</html>
